@@ -1,4 +1,4 @@
-package com.phuocnguyen.app.sivaosactions.AutomationSIVAOS.BeanScannerBSOS;
+package com.phuocnguyen.app.sivaosactions.Configurer.AutomationSIVAOS.BeanScannerBSOS;
 
 
 import com.sivaos.Utils.*;

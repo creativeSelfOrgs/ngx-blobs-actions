@@ -1,4 +1,4 @@
-package com.phuocnguyen.app.sivaosactions.AutomationSIVAOS.ControlCenterBSOS;
+package com.phuocnguyen.app.sivaosactions.Configurer.AutomationSIVAOS.ControlCenterBSOS;
 
 
 import com.sivaos.Utils.FileUtils;

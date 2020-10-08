@@ -3,5 +3,13 @@ sivaos:
   app-build: buildSIVAOSActions
   app-run: RUN_SIVAOS_Actions
   app-jar: SIVAOS-Actions
+  swagger:
+    description: API reference for developers
+    contact-name: sivaos
+    contact-url: https://github.com/pnguyen215
+    contact-email: sivaglobalos@gmail.com
+    license: sivaos 1.1
+    license-url: https://swagger.io/license/
+    version: v.1.1
 sivaos-support:
   link-clone-LDP: http://localhost:9090/clones-quick

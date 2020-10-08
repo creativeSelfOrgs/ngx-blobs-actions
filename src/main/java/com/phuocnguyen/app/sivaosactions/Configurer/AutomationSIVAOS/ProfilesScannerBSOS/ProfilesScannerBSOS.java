@@ -1,4 +1,4 @@
-package com.phuocnguyen.app.sivaosactions.AutomationSIVAOS.ProfilesScannerBSOS;
+package com.phuocnguyen.app.sivaosactions.Configurer.AutomationSIVAOS.ProfilesScannerBSOS;
 
 import com.sivaos.Utils.*;
 import com.sivaos.Variables.PatternEpochVariable;
