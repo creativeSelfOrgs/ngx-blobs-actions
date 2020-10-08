@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/global_schema?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&characterSetResults=UTF-8
+    initialization-mode: always
+    username: root
+    password: 12345678
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+hibernate:
+  config:
+    xml: hibernate-local.cfg.xml
+# Hibernate Log levels
+logging:
+  pattern:
+    console: "%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(%logger{0}){blue} %clr(%m){faint}%n"
+    rolling-file-name: logs/local-sivaos-%d{yyyy-MM-dd}.%i.log
+  file:
+    name: "logs/local-sivaos.log"

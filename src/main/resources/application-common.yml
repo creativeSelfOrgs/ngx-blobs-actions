@@ -1,0 +1,71 @@
+# Port
+server:
+  port: 8090
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+# JDBC
+spring:
+  main:
+    banner-mode: log
+  output:
+    ansi:
+      enabled: always
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        connection:
+          characterEncoding: utf-8
+          CharSet: utf-8
+          useUnicode: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: jwtSIVASecretKey
+          jws-algorithm: RS256
+  cache:
+    couchbase:
+      expiration: 846000
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 4GB
+      max-request-size: 30MB
+  # Mail
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    # Set unicode UTF-8
+# Hibernate Log Level
+logging:
+  level:
+    root: INFO
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+      springframework:
+        web: DEBUG
+  file:
+    max-size: 2MB # Max log file size
+    total-size-cap: 10MB # Total size of log files
+    max-history: 30 # Log files max history
+    clean-history-on-start: false # Clean history on start
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%"
+# FCM Push notification to your devices
+app:
+  firebase-configuration-file: sivafcmapp-firebase-adminsdk.json
+  notifications:
+    defaults: "{topic: 'common', title: 'Common Topic', message: 'Sending a message from SIVA OS \uD83D\uDE42', token: 'ss22t03wz208eg:APA2idkkow223FE_0v5yHxqCLTyxAQafj6nWaqi4QzwZTW004q1PUux63UsFN', payloadMessageId: '123', payloadData: 'Hi, SIVA OS sent to you a message.'}"
+

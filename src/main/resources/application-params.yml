@@ -1,0 +1,7 @@
+sivaos:
+  app: sivaos-actions
+  app-build: buildSIVAOSActions
+  app-run: RUN_SIVAOS_Actions
+  app-jar: SIVAOS-Actions
+sivaos-support:
+  link-clone-LDP: http://localhost:9090/clones-quick

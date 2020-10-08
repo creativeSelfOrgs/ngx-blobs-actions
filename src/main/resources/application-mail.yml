@@ -1,0 +1,15 @@
+spring:
+  mail:
+    host: smtp.gmail.com # if you rent a service support send email, fill in with new host
+    port: 587 # this is default port for g-mail, if you use ftp, so you need to fill in port is 25
+    username: sivaos # update-your-name
+    password: sivaos-contact@sivaos.com # update-your-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true

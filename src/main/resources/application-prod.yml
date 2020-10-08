@@ -1,0 +1,23 @@
+# PROD
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/global_schema?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&characterSetResults=UTF-8
+    initialization-mode: always
+    username: postgres
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+hibernate:
+  config:
+    xml: hibernate-prod.cfg.xml
+# Hibernate Log levels
+logging:
+  pattern:
+    console: "%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(%logger{0}){blue} %clr(%m){faint}%n"
+    rolling-file-name: logs/prod-sivaos-%d{yyyy-MM-dd}.%i.log
+  file:
+    name: "logs/prod-sivaos.log"
