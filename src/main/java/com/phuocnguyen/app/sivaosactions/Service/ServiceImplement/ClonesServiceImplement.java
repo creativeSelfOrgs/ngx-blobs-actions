@@ -7,9 +7,7 @@ import com.sivaos.Model.Response.Extend.HttpStatusCodesResponseDTO;
 import com.sivaos.Model.Response.Extend.StatusCodeResponseDTO;
 import com.sivaos.Model.Response.SIVAResponseDTO;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSHttpRequestServiceImplement;
-import com.sivaos.Utils.NetworkingUtils;
-import com.sivaos.Utils.ObjectUtils;
-import com.sivaos.Utils.UrlQueryUtils;
+import com.sivaos.Utils.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -36,9 +34,19 @@ public class ClonesServiceImplement implements ClonesService {
 
     @Override
     public SIVAResponseDTO<?> snagClones(InputStream inputStream, String nameSheet) {
+        String hostname = NetworkingUtils.snagPublicIPAsUrl(linkCloneLDP, 1);
+        URL url = NetworkingUtils.establishUrlConnection(linkCloneLDP);
+        sivaosHttpRequestServiceImplement.makeHOSTConnection(hostname, url.getPort(), url.getProtocol());
         List<String> response = new ArrayList<>();
+        List<String> responseAsFailure = new ArrayList<>();
+        List<String> resultCounts = new ArrayList<>();
+        List<ClonesRequestDTO> clonesRequestDTOS = new ArrayList<>();
+        List<ClonesRequestDTO> clonesRequestInvalidDTOS = new ArrayList<>();
         StatusCodeResponseDTO statusCodeResponseDTO1 = HttpStatusCodesResponseDTO.BAD_REQUEST;
         StatusCodeResponseDTO statusCodeResponseDTO2 = HttpStatusCodesResponseDTO.OK;
+        MessageResponseDTO messageResponseDTO;
+        int countAsSuccess = 0;
+        int countAsFailure = 0;
         if (ObjectUtils.isEmpty(nameSheet)) {
             return SIVAResponseDTO.buildSIVAResponse(null, statusCodeResponseDTO1);
         }
@@ -75,16 +83,35 @@ public class ClonesServiceImplement implements ClonesService {
                 clonesRequestDTOList.add(clonesRequestDTO);
             }
 
-            String hostname = NetworkingUtils.snagPublicIPAsUrl(linkCloneLDP, 1);
-            URL url = NetworkingUtils.establishUrlConnection(linkCloneLDP);
-            sivaosHttpRequestServiceImplement.makeHOSTConnection(hostname, url.getPort(), url.getProtocol());
             for (ClonesRequestDTO requestDTO : clonesRequestDTOList) {
+
+                if (FileUtils.isFileExist(requestDTO.getSourceAsDirs())) {
+                    FileUtils.snagAsDeleteSource(requestDTO.getSourceAsDirs());
+                }
+
+                if (ValidationUtils.isVerifiedAsUrl(requestDTO.getUrl()) && NetworkingUtils.snagAsRealConnection(requestDTO.getUrl())) {
+                    clonesRequestDTOS.add(requestDTO);
+                    countAsSuccess++;
+                } else {
+                    countAsFailure++;
+                    clonesRequestInvalidDTOS.add(requestDTO);
+                }
+            }
+
+            for (ClonesRequestDTO requestDTO : clonesRequestInvalidDTOS) {
+                responseAsFailure.add(requestDTO.getUrl().concat(" -> ").concat("failure 400"));
+            }
+
+            resultCounts.add("no. link success: ".concat(ExchangeUtils.exchangeIntegerToStringUsingIntegerToString(countAsSuccess)));
+            resultCounts.add("no. link failure: ".concat(ExchangeUtils.exchangeIntegerToStringUsingIntegerToString(countAsFailure)));
+
+            for (ClonesRequestDTO requestDTO : clonesRequestDTOS) {
                 params.put("link", requestDTO.getUrl());
                 params.put("resource", requestDTO.getSourceAsDirs());
-                MessageResponseDTO messageResponseDTO = sivaosHttpRequestServiceImplement.makeGETRequest(linkCloneLDP, UrlQueryUtils.snagQuery(params));
+                messageResponseDTO = sivaosHttpRequestServiceImplement.makeGETRequest(linkCloneLDP, UrlQueryUtils.snagQuery(params));
                 response.add(requestDTO.getUrl().concat(" -> ").concat(messageResponseDTO.getMessage()) + " " + messageResponseDTO.getStatusCodeResponseDTO().getCode());
             }
-            return SIVAResponseDTO.buildSIVAResponse(response, statusCodeResponseDTO2);
+            return SIVAResponseDTO.buildSIVAResponse(EdifyUtils.merge(response, EdifyUtils.merge(resultCounts, responseAsFailure)), statusCodeResponseDTO2);
 
         } catch (IOException message) {
             logger.error(message.getMessage(), message);
