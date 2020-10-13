@@ -59,15 +59,15 @@
     </root>
 
     <!--  body  -->
-    <logger name="com.phuocnguyen.tool.AuthorizationOauth2SIVAOS.Service.ServiceImplement.MyUserDetailsImplement"
+    <logger name="com.phuocnguyen.app.sivaosactions.Service.ServiceImplement.BuildServiceImplement"
             level="info">
         <appender-ref ref="Console"/>
     </logger>
-    <logger name="com.phuocnguyen.tool.AuthorizationOauth2SIVAOS.Service.ServiceImplement.SIVAEncodeDecodeServiceImplement"
+    <logger name="com.phuocnguyen.app.sivaosactions.Service.ServiceImplement.ClonesServiceImplement"
             level="info">
         <appender-ref ref="Console"/>
     </logger>
-    <logger name="com.phuocnguyen.tool.AuthorizationOauth2SIVAOS.Service.ServiceImplement.UserDetailsServiceImplement"
+    <logger name="com.phuocnguyen.app.sivaosactions.Service.ServiceImplement.ExtractorExcelServiceImplement"
             level="info">
         <appender-ref ref="Console"/>
     </logger>

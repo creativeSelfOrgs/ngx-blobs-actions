@@ -1,4 +1,4 @@
-package com.phuocnguyen.app.sivaosactions.AuthenticationRemoteTokenServiceSIVAOS;
+package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenServiceSIVAOS;
 
 import com.sivaos.Utils.PropertiesUtils;
 import org.springframework.beans.factory.annotation.Autowired;

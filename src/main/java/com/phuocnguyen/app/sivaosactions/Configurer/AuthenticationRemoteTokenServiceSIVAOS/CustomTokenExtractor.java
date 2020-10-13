@@ -1,4 +1,4 @@
-package com.phuocnguyen.app.sivaosactions.AuthenticationRemoteTokenServiceSIVAOS;
+package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenServiceSIVAOS;
 
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSAuthenticationServiceImplement;
 import org.springframework.security.core.Authentication;

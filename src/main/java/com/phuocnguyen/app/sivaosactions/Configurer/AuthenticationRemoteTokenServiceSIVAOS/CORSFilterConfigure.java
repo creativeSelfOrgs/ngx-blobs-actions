@@ -1,4 +1,4 @@
-package com.phuocnguyen.app.sivaosactions.AuthenticationRemoteTokenServiceSIVAOS;
+package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenServiceSIVAOS;
 
 import org.springframework.stereotype.Component;
 
