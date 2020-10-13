@@ -7,4 +7,6 @@ import java.io.InputStream;
 public interface ClonesService {
 
     SIVAResponseDTO<?> snagClones(InputStream inputStream, String nameSheet);
+
+    SIVAResponseDTO<?> snagIns(InputStream inputStream, String nameSheet);
 }

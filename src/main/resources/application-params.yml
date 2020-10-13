@@ -13,3 +13,5 @@ sivaos:
     version: v.1.1
 sivaos-support:
   link-clone-LDP: http://localhost:9090/clones-quick
+  link-clone-images-ins: http://localhost:9090/snag-images-instagram
+  link-query-completed-ins: https://www.instagram.com/

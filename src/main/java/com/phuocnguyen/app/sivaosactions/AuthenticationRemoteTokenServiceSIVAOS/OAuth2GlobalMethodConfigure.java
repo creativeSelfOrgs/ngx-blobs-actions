@@ -4,6 +4,7 @@ package com.phuocnguyen.app.sivaosactions.AuthenticationRemoteTokenServiceSIVAOS
 import com.sivaos.Service.SIVAOSServiceImplement.BaseSIVAOSServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSAuthenticationServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSHttpRequestServiceImplement;
+import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSProjectServiceImplement;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,5 +52,11 @@ public class OAuth2GlobalMethodConfigure extends GlobalMethodSecurityConfigurati
     @Resource(name = "sivaOsHttpService")
     public SIVAOSHttpRequestServiceImplement sivaosHttpRequestServiceImplement() {
         return new SIVAOSHttpRequestServiceImplement();
+    }
+
+    @Bean
+    @Resource(name = "projectService")
+    public SIVAOSProjectServiceImplement sivaosProjectServiceImplement() {
+        return new SIVAOSProjectServiceImplement();
     }
 }
