@@ -1,6 +1,7 @@
 package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenServiceSIVAOS;
 
 
+import com.phuocnguyen.app.sivaosactions.Configurer.SIVAJDBCConnectAutomation.SIVAJDBCConnectConfigurer;
 import com.sivaos.Service.SIVAOSServiceImplement.BaseSIVAOSServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSAuthenticationServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSHttpRequestServiceImplement;
@@ -37,6 +38,12 @@ public class OAuth2GlobalMethodConfigure extends GlobalMethodSecurityConfigurati
     }
 
     @Bean
+    @Resource
+    public SIVAJDBCConnectConfigurer sivajdbcConnectConfigurer() {
+        return new SIVAJDBCConnectConfigurer();
+    }
+
+    @Bean
     @Resource(name = "baseService")
     public BaseSIVAOSServiceImplement baseSIVAOSService() {
         return new BaseSIVAOSServiceImplement();
@@ -59,4 +66,5 @@ public class OAuth2GlobalMethodConfigure extends GlobalMethodSecurityConfigurati
     public SIVAOSProjectServiceImplement sivaosProjectServiceImplement() {
         return new SIVAOSProjectServiceImplement();
     }
+
 }
