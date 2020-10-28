@@ -99,9 +99,15 @@ public class ClonesServiceImplement implements ClonesService {
                         FileUtils.snagAsDeleteSource(requestDTO.getSourceAsDirs());
                     }
 
-                    if (ValidationUtils.isVerifiedAsUrl(requestDTO.getUrl()) && NetworkingUtils.snagAsRealConnection(requestDTO.getUrl())) {
-                        clonesRequestDTOS.add(requestDTO);
-                        countAsSuccess++;
+                    if (ValidationUtils.isVerifiedAsUrl(requestDTO.getUrl())) {
+                        if (!requestDTO.getUrl().startsWith("https://")) {
+                            requestDTO.setUrl(requestDTO.getUrl().replace("http://", "https://"));
+                        }
+                        if (NetworkingUtils.snagAsRealConnection(requestDTO.getUrl())) {
+                            clonesRequestDTOS.add(requestDTO);
+                            countAsSuccess++;
+                        }
+
                     } else {
                         countAsFailure++;
                         clonesRequestInvalidDTOS.add(requestDTO);
