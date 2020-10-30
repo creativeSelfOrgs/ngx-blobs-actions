@@ -1,7 +1,10 @@
 package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenServiceSIVAOS;
 
+import com.sivaos.Utility.CollectionsUtility;
+import com.sivaos.Utils.ObjectUtils;
 import com.sivaos.Utils.PropertiesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,6 +26,9 @@ import java.io.IOException;
 import java.util.Map;
 
 public class CustomRemoteTokenServiceConfigure implements ResourceServerTokenServices {
+
+    @Value("${spring.profiles.active}")
+    private String profileActives;
 
     private RestOperations restOperations;
     private AccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
@@ -53,8 +59,8 @@ public class CustomRemoteTokenServiceConfigure implements ResourceServerTokenSer
     public OAuth2Authentication loadAuthentication(String accessToken) throws AuthenticationException, InvalidTokenException {
         loadProperties();
         HttpHeaders headers = new HttpHeaders();
-        Map<String, Object> map = executeGet(PropertiesUtils.readPropertiesByAttributed("accessTokenUri") + accessToken, headers);
-        if (map == null || map.isEmpty() || map.get("error") != null) {
+        Map<String, Object> map = executeGet(PropertiesUtils.readPropertiesByAttributed("accessTokenUri" + "-" + profileActives) + accessToken, headers);
+        if (CollectionsUtility.isEmptyMap(map) || ObjectUtils.allNotNull(map.get("error"))) {
             throw new InvalidTokenException("Token not allowed");
         }
         return tokenConverter.extractAuthentication(map);
