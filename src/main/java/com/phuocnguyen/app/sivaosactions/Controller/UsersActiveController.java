@@ -1,6 +1,6 @@
 package com.phuocnguyen.app.sivaosactions.Controller;
 
-import com.phuocnguyen.app.sivaosactions.Configurer.SIVAJDBCConnectAutomation.SIVAJDBCConnectConfigurer;
+import com.sivaos.Configurer.SIVAJDBCConnectAutomation.SIVAJDBCConnectConfigurer;
 import com.sivaos.Controller.BaseSIVAOSController;
 import com.sivaos.Model.Response.SIVAResponseDTO;
 import org.slf4j.Logger;

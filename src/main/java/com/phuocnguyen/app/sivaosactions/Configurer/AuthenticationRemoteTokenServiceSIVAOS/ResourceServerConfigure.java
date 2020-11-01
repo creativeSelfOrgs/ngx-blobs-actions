@@ -27,7 +27,7 @@ public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
     public void configure(ResourceServerSecurityConfigurer resources) {
         loadProperties();
         resources.resourceId(PropertiesUtils.readPropertiesByAttributed("resourcesIds")).authenticationManager(authenticationManagerBean())
-                .tokenExtractor(new CustomTokenExtractor());
+                .tokenExtractor(new CustomTokenExtractor()).tokenServices(tokenService());
     }
 
     @Bean

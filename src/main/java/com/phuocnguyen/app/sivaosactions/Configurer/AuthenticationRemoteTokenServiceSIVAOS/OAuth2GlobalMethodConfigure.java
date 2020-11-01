@@ -1,7 +1,7 @@
 package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenServiceSIVAOS;
 
 
-import com.phuocnguyen.app.sivaosactions.Configurer.SIVAJDBCConnectAutomation.SIVAJDBCConnectConfigurer;
+import com.sivaos.Configurer.SIVAJDBCConnectAutomation.SIVAJDBCConnectConfigurer;
 import com.sivaos.Service.SIVAOSServiceImplement.BaseSIVAOSServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSAuthenticationServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSHttpRequestServiceImplement;
@@ -9,6 +9,7 @@ import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSProjectServiceImplement;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -38,30 +39,35 @@ public class OAuth2GlobalMethodConfigure extends GlobalMethodSecurityConfigurati
     }
 
     @Bean
+    @Primary
     @Resource
     public SIVAJDBCConnectConfigurer sivajdbcConnectConfigurer() {
         return new SIVAJDBCConnectConfigurer();
     }
 
     @Bean
+    @Primary
     @Resource(name = "baseService")
     public BaseSIVAOSServiceImplement baseSIVAOSService() {
         return new BaseSIVAOSServiceImplement();
     }
 
     @Bean
+    @Primary
     @Resource(name = "sivaOsAuthenticationService")
     public SIVAOSAuthenticationServiceImplement sivaosAuthenticationServiceImplement() {
         return new SIVAOSAuthenticationServiceImplement();
     }
 
     @Bean
+    @Primary
     @Resource(name = "sivaOsHttpService")
     public SIVAOSHttpRequestServiceImplement sivaosHttpRequestServiceImplement() {
         return new SIVAOSHttpRequestServiceImplement();
     }
 
     @Bean
+    @Primary
     @Resource(name = "projectService")
     public SIVAOSProjectServiceImplement sivaosProjectServiceImplement() {
         return new SIVAOSProjectServiceImplement();
