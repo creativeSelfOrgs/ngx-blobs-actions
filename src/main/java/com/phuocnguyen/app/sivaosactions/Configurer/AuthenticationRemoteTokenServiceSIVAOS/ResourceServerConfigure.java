@@ -2,6 +2,8 @@ package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenSe
 
 import com.sivaos.Configurer.AuthenticationRemoteTokenServiceSIVAOS.CustomRemoteTokenServiceConfigure;
 import com.sivaos.Configurer.AuthenticationRemoteTokenServiceSIVAOS.CustomTokenExtractor;
+import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSAccessDeniedHandlerImplement;
+import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSAuthenticationEntryPointImplement;
 import com.sivaos.Utils.PropertiesUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +29,7 @@ public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
     public void configure(ResourceServerSecurityConfigurer resources) {
         loadProperties();
         resources.resourceId(PropertiesUtils.readPropertiesByAttributed("resourcesIds")).authenticationManager(authenticationManagerBean())
-                .tokenExtractor(new CustomTokenExtractor()).tokenServices(tokenService());
+                .tokenExtractor(new CustomTokenExtractor()).tokenServices(tokenService()).authenticationEntryPoint(new SIVAOSAuthenticationEntryPointImplement()).accessDeniedHandler(new SIVAOSAccessDeniedHandlerImplement());
     }
 
     @Bean
