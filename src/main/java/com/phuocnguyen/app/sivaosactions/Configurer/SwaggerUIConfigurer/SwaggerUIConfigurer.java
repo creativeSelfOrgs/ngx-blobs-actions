@@ -1,13 +1,11 @@
 package com.phuocnguyen.app.sivaosactions.Configurer.SwaggerUIConfigurer;
 
-import com.sivaos.Utils.PropertiesUtils;
+import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSSIVAOSSwaggerUIConfigurerServiceImplement;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -19,10 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerUIConfigurer {
 
-    private void loadConfigProperties() {
-        PropertiesUtils.setApplicationSource("application-params.yml");
-        PropertiesUtils.loadProperties();
-    }
+    SIVAOSSIVAOSSwaggerUIConfigurerServiceImplement swaggerService;
 
     @Bean
     public Docket swaggerApi() {
@@ -35,12 +30,7 @@ public class SwaggerUIConfigurer {
     }
 
     private ApiInfo apiInfoProvider() {
-        loadConfigProperties();
-        return new ApiInfoBuilder().title(PropertiesUtils.readPropertiesByAttributed("app"))
-                .description(PropertiesUtils.readPropertiesByAttributed("description"))
-                .contact(new Contact(PropertiesUtils.readPropertiesByAttributed("contact-name"), PropertiesUtils.readPropertiesByAttributed("contact-url"), PropertiesUtils.readPropertiesByAttributed("contact-email")))
-                .license(PropertiesUtils.readPropertiesByAttributed("license"))
-                .licenseUrl(PropertiesUtils.readPropertiesByAttributed("license-url"))
-                .version(PropertiesUtils.readPropertiesByAttributed("version")).build();
+        swaggerService = new SIVAOSSIVAOSSwaggerUIConfigurerServiceImplement();
+        return swaggerService.apiInfoProvider();
     }
 }
