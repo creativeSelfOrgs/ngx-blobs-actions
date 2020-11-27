@@ -67,6 +67,7 @@ dependencies {
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.21.Final'
 	compile group: 'log4j', name: 'log4j', version: '1.2.17'
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+	compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.1'
 	compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
 	compile group: 'commons-validator', name: 'commons-validator', version: '1.4.0'
 	compile group: 'org.hibernate', name: 'hibernate-validator', version: '7.0.0.Alpha1'

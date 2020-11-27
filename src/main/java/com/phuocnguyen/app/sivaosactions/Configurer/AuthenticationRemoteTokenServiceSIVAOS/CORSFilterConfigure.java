@@ -4,9 +4,6 @@ import com.sivaos.Configurer.CustomFilterRequest.TypeSafeRequest;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Component
 public class CORSFilterConfigure implements Filter {
@@ -22,5 +19,6 @@ public class CORSFilterConfigure implements Filter {
     }
 
     public void init(FilterConfig fConfig) {
+        TypeSafeRequest.init(fConfig);
     }
 }
