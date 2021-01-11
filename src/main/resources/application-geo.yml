@@ -1,0 +1,15 @@
+#spring:
+#  config:
+#    additional-location: spring-configuration-metadata.json
+#    location: vn
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Ho_Chi_Minh
+sivaos:
+  geo:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Ho_Chi_Minh
+    status: running
+    name: vn
+

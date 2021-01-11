@@ -1,12 +1,15 @@
 package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenServiceSIVAOS;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sivaos.Configurer.SIVAJDBCConnectAutomation.SIVAJDBCConnectConfigurer;
 import com.sivaos.Service.SIVAOSServiceImplement.BaseSIVAOSServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSAuthenticationServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSHttpRequestServiceImplement;
 import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSProjectServiceImplement;
+import com.sivaos.Utils.ConfigGlobalUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -23,6 +26,15 @@ import javax.annotation.Resource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Profile(value = {"dev", "local", "prod"})
 public class OAuth2GlobalMethodConfigure extends GlobalMethodSecurityConfiguration {
+
+    @Value("${sivaos.geo.time-zone}")
+    private String timezone;
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return ConfigGlobalUtils.configureDateTimeGlobal(timezone);
+    }
+
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
         return new OAuth2MethodSecurityExpressionHandler();
