@@ -5,8 +5,12 @@ plugins {
 	id 'war'
 }
 
+ext {
+	sivaMasterVersion = '1.1.0'
+}
+
 group = 'com.phuocnguyen.app'
-version = '0.0.1-SNAPSHOT'
+version = "${sivaMasterVersion}"
 sourceCompatibility = '1.8'
 
 repositories {
@@ -18,10 +22,12 @@ apply plugin: 'war'
 jar.enabled = false
 bootWar {
 	archiveFileName = 'SIVAOS-Actions.war'
+	version("${sivaMasterVersion}")
 }
 
 bootJar {
 	archiveFileName = 'SIVAOS-Actions.jar'
+	version("${sivaMasterVersion}")
 }
 
 dependencies {
