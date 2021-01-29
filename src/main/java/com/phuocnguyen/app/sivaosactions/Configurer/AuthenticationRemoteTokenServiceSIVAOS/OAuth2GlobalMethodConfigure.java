@@ -3,10 +3,7 @@ package com.phuocnguyen.app.sivaosactions.Configurer.AuthenticationRemoteTokenSe
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sivaos.Configurer.SIVAJDBCConnectAutomation.SIVAJDBCConnectConfigurer;
-import com.sivaos.Service.SIVAOSServiceImplement.BaseSIVAOSServiceImplement;
-import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSAuthenticationServiceImplement;
-import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSHttpRequestServiceImplement;
-import com.sivaos.Service.SIVAOSServiceImplement.SIVAOSProjectServiceImplement;
+import com.sivaos.Service.SIVAOSServiceImplement.*;
 import com.sivaos.Utils.ConfigGlobalUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +16,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -33,6 +34,25 @@ public class OAuth2GlobalMethodConfigure extends GlobalMethodSecurityConfigurati
     @Bean
     public ObjectMapper objectMapper() {
         return ConfigGlobalUtils.configureDateTimeGlobal(timezone);
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Collections.singletonList(OAuth2AccessTokenVariable.AUTHENTICATION));
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Collections.singletonList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
+    @Primary
+    @Resource(name = "globalExceptionService")
+    public GlobalExceptionServiceImplement globalExceptionServiceImplement() {
+        return new GlobalExceptionServiceImplement();
     }
 
     @Override
@@ -83,6 +103,10 @@ public class OAuth2GlobalMethodConfigure extends GlobalMethodSecurityConfigurati
     @Resource(name = "projectService")
     public SIVAOSProjectServiceImplement sivaosProjectServiceImplement() {
         return new SIVAOSProjectServiceImplement();
+    }
+
+    private static class OAuth2AccessTokenVariable {
+        private static final String AUTHENTICATION = "Authorization";
     }
 
 }
