@@ -59,15 +59,15 @@
     </root>
 
     <!--  body  -->
-    <logger name="com.phuocnguyen.app.sivaosactions.Service.ServiceImplement.BuildServiceImplement"
+    <logger name="com.phuocnguyen.app.sivaosactions.service.serviceImpl.BuildServiceImpl"
             level="info">
         <appender-ref ref="Console"/>
     </logger>
-    <logger name="com.phuocnguyen.app.sivaosactions.Service.ServiceImplement.ClonesServiceImplement"
+    <logger name="com.phuocnguyen.app.sivaosactions.service.serviceImpl.ClonesServiceImpl"
             level="info">
         <appender-ref ref="Console"/>
     </logger>
-    <logger name="com.phuocnguyen.app.sivaosactions.Service.ServiceImplement.ExtractorExcelServiceImplement"
+    <logger name="com.phuocnguyen.app.sivaosactions.service.serviceImpl.ExtractorExcelServiceImpl"
             level="info">
         <appender-ref ref="Console"/>
     </logger>
