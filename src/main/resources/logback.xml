@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <!--  begin::Paths  -->
     <property name="LOGS" value="./logs"/>
+    <property name="LOG_ARCHIVED" value="${LOGS}/archived"/>
+    <property name="INFO_LOG_PATH" value="${LOGS}/info.log"/>
+    <property name="ERROR_LOG_PATH" value="${LOGS}/error.log"/>
+    <property name="DEBUG_LOG_PATH" value="${LOGS}/debug.log"/>
+    <property name="TRACE_LOG_PATH" value="${LOGS}/trace.log"/>
+    <property name="WARN_LOG_PATH" value="${LOGS}/warn.log"/>
+    <!--  end::Paths  -->
 
-    <appender name="Console"
+    <!--  Note:
+    1. maxFileSize -  each archived file, size max 10MB
+    2. totalSizeCap -  total size of all archive files, if total size > 5GB, it will delete old archived file
+    3. maxHistory - 30 days to keep
+     -->
+
+    <!--  begin::Const -->
+    <property name="maxFileSize" value="10MB"/>
+    <property name="totalSizeCap" value="5GB"/>
+    <property name="maxHistory" value="30"/>
+    <property name="info-context" value="info-context"/>
+    <property name="error-context" value="error-context"/>
+    <property name="debug-context" value="debug-context"/>
+    <property name="trace-context" value="trace-context"/>
+    <property name="warn-context" value="warn-context"/>
+    <property name="console-formatted"
+              value="%green(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable"/>
+    <property name="STDOUT" value="%d %p %c{1.} [%t] %m%n"/>
+    <!--  end::Const -->
+
+    <!--  begin::Console  -->
+    <appender name="CONSOLE-DEFAULT"
               class="ch.qos.logback.core.ConsoleAppender">
+
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
                 %green(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
@@ -12,74 +42,214 @@
         </layout>
     </appender>
 
-    <appender name="RollingInfoFile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/info.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-        </encoder>
+    <appender name="CONSOLE-INFO"
+              class="ch.qos.logback.core.ConsoleAppender">
 
-        <rollingPolicy
-                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- Rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOGS}/archived/info-%d{yyyy-MM-dd}.%i.log
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                ${console-formatted}
+            </Pattern>
+        </layout>
     </appender>
 
-    <appender name="RollingErrorFile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/error.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-        </encoder>
+    <appender name="CONSOLE-ERROR"
+              class="ch.qos.logback.core.ConsoleAppender">
 
-        <rollingPolicy
-                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- Rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOGS}/archived/error-%d{yyyy-MM-dd}.%i.log
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                ${console-formatted}
+            </Pattern>
+        </layout>
     </appender>
+    <!--  end::Console  -->
 
-    <!-- log everything at ''info'' level -->
+    <!--  begin::Rotate logs file  -->
+    <!--  begin::Info  -->
+    <appender name="FILE-ROLLING-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${INFO_LOG_PATH}</file>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ARCHIVED}/${info-context}/${info-context}-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STDOUT}</pattern>
+        </encoder>
+    </appender>
+    <!--  end::Info  -->
+
+    <!--  begin::Error  -->
+    <appender name="FILE-ROLLING-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${ERROR_LOG_PATH}</file>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ARCHIVED}/${error-context}/${error-context}-%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STDOUT}</pattern>
+        </encoder>
+    </appender>
+    <!--  end::Error  -->
+
+    <!--  begin::Debug  -->
+    <appender name="FILE-ROLLING-DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEBUG_LOG_PATH}</file>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ARCHIVED}/${debug-context}/${debug-context}-%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STDOUT}</pattern>
+        </encoder>
+    </appender>
+    <!--  end::Debug  -->
+
+    <!--  begin::Trace  -->
+    <appender name="FILE-ROLLING-TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${TRACE_LOG_PATH}</file>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ARCHIVED}/${trace-context}/${trace-context}-%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STDOUT}</pattern>
+        </encoder>
+    </appender>
+    <!--  end::Trace  -->
+
+    <!--  begin::Warn  -->
+    <appender name="FILE-ROLLING-WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${WARN_LOG_PATH}</file>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ARCHIVED}/${warn-context}/${warn-context}-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STDOUT}</pattern>
+        </encoder>
+    </appender>
+    <!--  end::Warn  -->
+    <!--  end::Rotate logs file  -->
+
+    <!--  begin::Asynchronously  -->
+    <appender name="ROLLING-ASYNC-ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE-ROLLING-ERROR"/>
+    </appender>
+    <!--  end::Asynchronously  -->
+
+    <!--  begin::Root  -->
     <root level="info">
-        <appender-ref ref="RollingInfoFile"/>
-        <appender-ref ref="Console"/>
+        <appender-ref ref="FILE-ROLLING-INFO"/>
+        <appender-ref ref="CONSOLE-INFO"/>
     </root>
 
-    <!--  body  -->
-    <logger name="com.phuocnguyen.app.sivaosactions.service.serviceImpl.BuildServiceImpl"
-            level="info">
-        <appender-ref ref="Console"/>
-    </logger>
-    <logger name="com.phuocnguyen.app.sivaosactions.service.serviceImpl.ClonesServiceImpl"
-            level="info">
-        <appender-ref ref="Console"/>
-    </logger>
-    <logger name="com.phuocnguyen.app.sivaosactions.service.serviceImpl.ExtractorExcelServiceImpl"
-            level="info">
-        <appender-ref ref="Console"/>
+    <root level="error">
+        <appender-ref ref="ROLLING-ASYNC-ERROR"/>
+        <appender-ref ref="CONSOLE-ERROR"/>
+    </root>
+
+    <root level="debug">
+        <appender-ref ref="FILE-ROLLING-DEBUG"/>
+    </root>
+
+    <root level="trace">
+        <appender-ref ref="FILE-ROLLING-TRACE"/>
+    </root>
+
+    <root level="warn">
+        <appender-ref ref="FILE-ROLLING-WARN"/>
+    </root>
+    <!--  end::Root  -->
+
+    <!--  begin::Elements  -->
+    <logger name="com.phuocnguyen.*" level="INFO" additivity="false">
+        <appender-ref ref="FILE-ROLLING-INFO"/>
+        <appender-ref ref="CONSOLE-INFO"/>
     </logger>
 
-    <!--  footer  -->
-    <logger name="infoLog" level="trace" additivity="false">
-        <appender-ref ref="RollingInfoFile"/>
-        <appender-ref ref="Console"/>
+    <logger name="com.phuocnguyen.*" level="ERROR" additivity="false">
+        <appender-ref ref="ROLLING-ASYNC-ERROR"/>
+        <appender-ref ref="CONSOLE-ERROR"/>
     </logger>
-    <logger name="errorLog" level="error" additivity="false">
-        <appender-ref ref="RollingErrorFile"/>
-        <appender-ref ref="Console"/>
+
+    <logger name="com.phuocnguyen.*" level="WARN" additivity="false">
+        <appender-ref ref="FILE-ROLLING-WARN"/>
     </logger>
+
+    <logger name="java.sql.PreparedStatement" level="DEBUG">
+        <appender-ref ref="FILE-ROLLING-DEBUG"/>
+    </logger>
+    <logger name="java.sql.Connection" level="DEBUG">
+        <appender-ref ref="FILE-ROLLING-DEBUG"/>
+    </logger>
+    <logger name="java.sql.Statement" level="DEBUG">
+        <appender-ref ref="FILE-ROLLING-DEBUG"/>
+    </logger>
+    <!--  end::Elements  -->
+
 
 </configuration>

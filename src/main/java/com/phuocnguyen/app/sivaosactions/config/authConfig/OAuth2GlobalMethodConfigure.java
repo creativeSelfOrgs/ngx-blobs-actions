@@ -2,6 +2,8 @@ package com.phuocnguyen.app.sivaosactions.config.authConfig;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ngxsivaos.services.NgxSOrgHelperBaseService;
+import com.ngxsivaos.services.impls.NgxSOrgHelperBaseServiceImpl;
 import com.sivaos.Configurer.SIVAJDBCConnectAutomation.SIVAJDBCConnectConfigurer;
 import com.sivaos.Service.SIVAOSServiceImplement.*;
 import com.sivaos.Utils.ConfigGlobalUtils;
@@ -103,6 +105,13 @@ public class OAuth2GlobalMethodConfigure extends GlobalMethodSecurityConfigurati
     @Resource(name = "projectService")
     public SIVAOSProjectServiceImplement sivaosProjectServiceImplement() {
         return new SIVAOSProjectServiceImplement();
+    }
+
+    @Bean
+    @Primary
+    @Resource(name = "ngxSOrgHelperBaseService")
+    public NgxSOrgHelperBaseService ngxSOrgHelperBaseService() {
+        return new NgxSOrgHelperBaseServiceImpl();
     }
 
     private static class OAuth2AccessTokenVariable {
